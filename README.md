@@ -25,7 +25,8 @@ Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
 - Web tests:
     - Wasm target: `./gradlew :shared:wasmJsTest`
     - JS target: `./gradlew :shared:jsTest`
-
+- Web build distribute:
+  -  `./gradlew :webApp:wasmJsBrowserDistribution`
 ---
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),

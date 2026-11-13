@@ -1,0 +1,43 @@
+name: Deploy Compose Multiplatform Web to GitHub Pages
+
+on:
+  push:
+    branches: [ master ] # Đổi thành 'master' nếu nhánh chính của bạn là master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build Web Distribution
+        run: ./gradlew :webApp:wasmJsBrowserDistribution
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Trỏ đúng đường dẫn đến thư mục build production của bạn
+          path: ./webApp/build/dist/wasmJs/productionExecutable
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
